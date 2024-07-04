@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AlsCameraSettings.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Utility/AlsMath.h"
 #include "AlsCameraComponent.generated.h"
@@ -102,6 +103,12 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "ALS|Camera", Meta = (ReturnDisplayName = "Trace Start"))
 	FVector GetThirdPersonTraceStartLocation() const;
+
+	UFUNCTION(BlueprintPure, Category = "ALS|Camera", Meta = (ReturnDisplayName = "Get Third Person FOV"))
+	FORCEINLINE float GetThirdPersonFOV() const { return Settings->ThirdPerson.Fov; }
+
+	UFUNCTION(BlueprintPure, Category = "ALS|Camera", Meta = (ReturnDisplayName = "Get First Person FOV"))
+	FORCEINLINE float GetFirstPersonFOV() const { return Settings->FirstPerson.Fov; }
 
 	UFUNCTION(BlueprintPure, Category = "ALS|Camera")
 	void GetViewInfo(FMinimalViewInfo& ViewInfo) const;
