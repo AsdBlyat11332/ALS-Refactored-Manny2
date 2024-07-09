@@ -111,7 +111,7 @@ public:
 	FORCEINLINE float GetFirstPersonFOV() const { return Settings->FirstPerson.Fov; }
 
 	UFUNCTION(BlueprintPure, Category = "ALS|Camera")
-	void GetViewInfo(FMinimalViewInfo& ViewInfo) const;
+	virtual void GetViewInfo(FMinimalViewInfo& ViewInfo) const;
 
 private:
 	void TickCamera(float DeltaTime, bool bAllowLag = true);
