@@ -18,6 +18,10 @@ class UAlsMovementSettings;
 class UAlsAnimationInstance;
 class UAlsMantlingSettings;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnUpdateVisibility);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRollingStart);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnRollingEnd);
+
 UCLASS(AutoExpandCategories = ("Settings|Als Character", "Settings|Als Character|Desired State", "State|Als Character"))
 class ALS_API AAlsCharacter : public ACharacter
 {
@@ -576,6 +580,18 @@ private:
 	FVector RagdollTraceGround(bool& bGrounded) const;
 
 	void LimitRagdollSpeed() const;
+
+	// Custom
+	
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnUpdateVisibility OnUpdateVisibility;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnRollingStart OnRollingStart;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnRollingEnd OnRollingEnd;
 
 	// Debug
 

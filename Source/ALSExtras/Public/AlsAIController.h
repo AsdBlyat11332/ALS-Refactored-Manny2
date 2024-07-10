@@ -13,7 +13,7 @@ protected:
 	TObjectPtr<UBehaviorTree> BehaviorTree;
 
 public:
-	AAlsAIController();
+	AAlsAIController(const FObjectInitializer& ObjectInitializer);
 
 protected:
 	virtual void OnPossess(APawn* NewPawn) override;
