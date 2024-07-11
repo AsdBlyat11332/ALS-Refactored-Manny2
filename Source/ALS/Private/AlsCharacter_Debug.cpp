@@ -196,6 +196,8 @@ void AAlsCharacter::DisplayDebugCurves(const UCanvas* Canvas, const float Scale,
 		FName{TEXT("SprintBlock")},
 		FName{TEXT("ViewBlock")},
 	};
+
+	AlsCurves.Append(GetDisplayDebugAdditionalCurves());
 	
 	VerticalLocation += 4.0f * Scale;
 

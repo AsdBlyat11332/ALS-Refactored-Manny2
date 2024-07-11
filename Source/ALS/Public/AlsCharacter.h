@@ -307,11 +307,12 @@ protected:
 private:
 	void RefreshGait();
 
-	FGameplayTag CalculateMaxAllowedGait() const;
+protected:
+	virtual FGameplayTag CalculateMaxAllowedGait() const;
 
-	FGameplayTag CalculateActualGait(const FGameplayTag& MaxAllowedGait) const;
+	virtual FGameplayTag CalculateActualGait(const FGameplayTag& MaxAllowedGait) const;
 
-	bool CanSprint() const;
+	virtual bool CanSprint() const;
 
 	// Overlay Mode
 
@@ -602,6 +603,7 @@ private:
 	static void DisplayDebugHeader(const UCanvas* Canvas, const FText& HeaderText, const FLinearColor& HeaderColor,
 	                               float Scale, float HorizontalLocation, float& VerticalLocation);
 
+	virtual TSet<FName> GetDisplayDebugAdditionalCurves() const { return TSet<FName>(); }
 	void DisplayDebugCurves(const UCanvas* Canvas, float Scale, float HorizontalLocation, float& VerticalLocation) const;
 
 	void DisplayDebugState(const UCanvas* Canvas, float Scale, float HorizontalLocation, float& VerticalLocation) const;
