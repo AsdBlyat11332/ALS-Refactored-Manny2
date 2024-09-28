@@ -10,17 +10,17 @@ class ALS_API UAlsTurnInPlaceSettings : public UObject
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings")
-	TObjectPtr<UAnimSequenceBase> Animation;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings")
+	TObjectPtr<UAnimSequenceBase> Sequence;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings", Meta = (ClampMin = 0, ForceUnits = "x"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings", Meta = (ClampMin = 0, ForceUnits = "x"))
 	float PlayRate{1.2f};
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings")
 	uint8 bScalePlayRateByAnimatedTurnAngle : 1 {true};
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings", Meta = (ClampMin = 0, ClampMax = 180, ForceUnits = "deg"))
-	float AnimatedTurnAngle;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings", Meta = (ClampMin = 0.0001, ClampMax = 180, ForceUnits = "deg"))
+	float AnimatedTurnAngle{0.0f};
 };
 
 USTRUCT(BlueprintType)
@@ -37,37 +37,34 @@ struct ALS_API FAlsGeneralTurnInPlaceSettings
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Meta = (ClampMin = 0))
 	FVector2f ViewYawAngleToActivationDelay{0.0f, 0.75f};
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", DisplayName = "Turn 180 Angle Threshold",
-		Meta = (ClampMin = 0, ClampMax = 180, ForceUnits = "deg"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS",
+		DisplayName = "Turn 180 Angle Threshold", Meta = (ClampMin = 0, ClampMax = 180, ForceUnits = "deg"))
 	float Turn180AngleThreshold{130.0f};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Meta = (ClampMin = 0, ForceUnits = "s"))
 	float BlendDuration{0.2f};
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS")
-	uint8 bDisableFootLock : 1 {false};
-
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Instanced, DisplayName = "Standing Turn 90 Left")
-	TObjectPtr<UAlsTurnInPlaceSettings> StandingTurn90Left{nullptr};
+	TObjectPtr<UAlsTurnInPlaceSettings> StandingTurn90Left;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Instanced, DisplayName = "Standing Turn 90 Right")
-	TObjectPtr<UAlsTurnInPlaceSettings> StandingTurn90Right{nullptr};
+	TObjectPtr<UAlsTurnInPlaceSettings> StandingTurn90Right;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Instanced, DisplayName = "Standing Turn 180 Left")
-	TObjectPtr<UAlsTurnInPlaceSettings> StandingTurn180Left{nullptr};
+	TObjectPtr<UAlsTurnInPlaceSettings> StandingTurn180Left;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Instanced, DisplayName = "Standing Turn 180 Right")
-	TObjectPtr<UAlsTurnInPlaceSettings> StandingTurn180Right{nullptr};
+	TObjectPtr<UAlsTurnInPlaceSettings> StandingTurn180Right;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Instanced, DisplayName = "Crouching Turn 90 Left")
-	TObjectPtr<UAlsTurnInPlaceSettings> CrouchingTurn90Left{nullptr};
+	TObjectPtr<UAlsTurnInPlaceSettings> CrouchingTurn90Left;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Instanced, DisplayName = "Crouching Turn 90 Right")
-	TObjectPtr<UAlsTurnInPlaceSettings> CrouchingTurn90Right{nullptr};
+	TObjectPtr<UAlsTurnInPlaceSettings> CrouchingTurn90Right;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Instanced, DisplayName = "Crouching Turn 180 Left")
-	TObjectPtr<UAlsTurnInPlaceSettings> CrouchingTurn180Left{nullptr};
+	TObjectPtr<UAlsTurnInPlaceSettings> CrouchingTurn180Left;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Instanced, DisplayName = "Crouching Turn 180 Right")
-	TObjectPtr<UAlsTurnInPlaceSettings> CrouchingTurn180Right{nullptr};
+	TObjectPtr<UAlsTurnInPlaceSettings> CrouchingTurn180Right;
 };

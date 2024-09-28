@@ -3,22 +3,21 @@
 #include UE_INLINE_GENERATED_CPP_BY_NAME(AlsMantlingSettings)
 
 #if WITH_EDITOR
-void FAlsGeneralMantlingSettings::PostEditChangeProperty(const FPropertyChangedEvent& PropertyChangedEvent)
+void FAlsGeneralMantlingSettings::PostEditChangeProperty(const FPropertyChangedEvent& ChangedEvent)
 {
-	if (PropertyChangedEvent.GetPropertyName() == GET_MEMBER_NAME_CHECKED(FAlsGeneralMantlingSettings, SlopeAngleThreshold))
+	if (ChangedEvent.GetPropertyName() == GET_MEMBER_NAME_STRING_VIEW_CHECKED(FAlsGeneralMantlingSettings, SlopeAngleThreshold))
 	{
 		SlopeAngleThresholdCos = FMath::Cos(FMath::DegreesToRadians(SlopeAngleThreshold));
 	}
-	else if (PropertyChangedEvent.GetPropertyName() != GET_MEMBER_NAME_CHECKED(FAlsGeneralMantlingSettings, MantlingTraceResponseChannels))
+	else if (ChangedEvent.GetPropertyName() ==
+	         GET_MEMBER_NAME_STRING_VIEW_CHECKED(FAlsGeneralMantlingSettings, MantlingTraceResponseChannels))
 	{
-		return;
-	}
+		MantlingTraceResponses.SetAllChannels(ECR_Ignore);
 
-	MantlingTraceResponses.SetAllChannels(ECR_Ignore);
-
-	for (const auto CollisionChannel : MantlingTraceResponseChannels)
-	{
-		MantlingTraceResponses.SetResponse(CollisionChannel, ECR_Block);
+		for (const auto CollisionChannel : MantlingTraceResponseChannels)
+		{
+			MantlingTraceResponses.SetResponse(CollisionChannel, ECR_Block);
+		}
 	}
 }
 #endif

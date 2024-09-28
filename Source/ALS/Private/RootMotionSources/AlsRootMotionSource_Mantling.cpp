@@ -7,7 +7,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Settings/AlsMantlingSettings.h"
 #include "Utility/AlsMacros.h"
-#include "Utility/AlsUtility.h"
+#include "Utility/AlsMontageUtility.h"
+#include "Utility/AlsRotation.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(AlsRootMotionSource_Mantling)
 
@@ -62,6 +63,11 @@ void FAlsRootMotionSource_Mantling::PrepareRootMotion(const float SimulationDelt
 			: FTransform{TargetRelativeRotation, TargetRelativeLocation}
 	};
 
+	// Remove the pitch and roll components of the rotation so that the actor's Z axis is always aligned with the gravity direction.
+
+	const auto Twist{UAlsRotation::GetTwist(TargetTransform.GetRotation(), -Character.GetGravityDirection())};
+	TargetTransform.SetRotation(Twist);
+
 	auto BlendInAmount{1.0f};
 
 	const auto& MontageBlendIn{Montage->BlendIn};
@@ -71,7 +77,7 @@ void FAlsRootMotionSource_Mantling::PrepareRootMotion(const float SimulationDelt
 		                                                MontageBlendIn.GetBlendOption(), MontageBlendIn.GetCustomCurve());
 	}
 
-	const auto CurrentAnimationLocation{UAlsUtility::ExtractRootTransformFromMontage(Montage, MontageTime).GetLocation()};
+	const auto CurrentAnimationLocation{UAlsMontageUtility::ExtractRootTransformFromMontage(Montage, MontageTime).GetLocation()};
 
 	// The target animation location is expected to be non-zero, so it's safe to divide by it here.
 

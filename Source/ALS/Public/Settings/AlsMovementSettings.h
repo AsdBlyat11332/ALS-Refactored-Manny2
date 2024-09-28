@@ -13,11 +13,23 @@ struct ALS_API FAlsMovementGaitSettings
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Meta = (ClampMin = 0, ForceUnits = "cm/s"))
-	float WalkSpeed{175.0f};
+	// Currently, the direction-dependent movement speed can cause some jitter in multiplayer, so enable it at your own risk.
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ALS")
+	uint8 bAllowDirectionDependentMovementSpeed : 1 {false};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Meta = (ClampMin = 0, ForceUnits = "cm/s"))
-	float RunSpeed{375.0f};
+	float WalkForwardSpeed{175.0f};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS",
+		Meta = (ClampMin = 0, EditCondition = "bAllowDirectionDependentMovementSpeed", ForceUnits = "cm/s"))
+	float WalkBackwardSpeed{175.0f};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Meta = (ClampMin = 0, ForceUnits = "cm/s"))
+	float RunForwardSpeed{375.0f};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS",
+		Meta = (ClampMin = 0, EditCondition = "bAllowDirectionDependentMovementSpeed", ForceUnits = "cm/s"))
+	float RunBackwardSpeed{375.0f};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS", Meta = (ClampMin = 0, ForceUnits = "cm/s"))
 	float SprintSpeed{650.0f};
@@ -25,15 +37,17 @@ public:
 	// Gait amount to acceleration, deceleration, and ground friction curve.
 	// Gait amount ranges from 0 to 3, where 0 is stopped, 1 is walking, 2 is running, and 3 is sprinting.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS")
-	TObjectPtr<UCurveVector> AccelerationAndDecelerationAndGroundFrictionCurve{nullptr};
+	TObjectPtr<UCurveVector> AccelerationAndDecelerationAndGroundFrictionCurve;
 
 	// Gait amount to rotation interpolation speed curve.
 	// Gait amount ranges from 0 to 3, where 0 is stopped, 1 is walking, 2 is running, and 3 is sprinting.
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ALS")
-	TObjectPtr<UCurveFloat> RotationInterpolationSpeedCurve{nullptr};
+	TObjectPtr<UCurveFloat> RotationInterpolationSpeedCurve;
 
 public:
-	float GetSpeedByGait(const FGameplayTag& Gait) const;
+	float GetMaxWalkSpeed() const;
+
+	float GetMaxRunSpeed() const;
 };
 
 USTRUCT(BlueprintType)
@@ -55,6 +69,11 @@ class ALS_API UAlsMovementSettings : public UDataAsset
 	GENERATED_BODY()
 
 public:
+	// Range of velocity angle relative to the view direction at which
+	// interpolation from forward speed to backward speed will take place.
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings", Meta = (ClampMin = 0, ClampMax = 180, ForceUnits = "deg"))
+	FVector2f VelocityAngleToSpeedInterpolationRange{100.0f, 125.0f};
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Settings", Meta = (ForceInlineRow))
 	TMap<FGameplayTag, FAlsMovementStanceSettings> RotationModes
 	{
@@ -62,24 +81,23 @@ public:
 		{AlsRotationModeTags::ViewDirection, {}},
 		{AlsRotationModeTags::Aiming, {}}
 	};
+
+public:
+#if WITH_EDITOR
+	virtual void PostEditChangeProperty(FPropertyChangedEvent& ChangedEvent) override;
+#endif
 };
 
-inline float FAlsMovementGaitSettings::GetSpeedByGait(const FGameplayTag& Gait) const
+inline float FAlsMovementGaitSettings::GetMaxWalkSpeed() const
 {
-	if (Gait == AlsGaitTags::Walking)
-	{
-		return WalkSpeed;
-	}
+	return bAllowDirectionDependentMovementSpeed
+		       ? FMath::Max(WalkForwardSpeed, WalkBackwardSpeed)
+		       : WalkForwardSpeed;
+}
 
-	if (Gait == AlsGaitTags::Running)
-	{
-		return RunSpeed;
-	}
-
-	if (Gait == AlsGaitTags::Sprinting)
-	{
-		return SprintSpeed;
-	}
-
-	return 0.0f;
+inline float FAlsMovementGaitSettings::GetMaxRunSpeed() const
+{
+	return bAllowDirectionDependentMovementSpeed
+		       ? FMath::Max(RunForwardSpeed, RunBackwardSpeed)
+		       : RunForwardSpeed;
 }

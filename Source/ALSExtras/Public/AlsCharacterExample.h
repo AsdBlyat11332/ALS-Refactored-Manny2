@@ -8,7 +8,7 @@ class UAlsCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 
-UCLASS(AutoExpandCategories = ("Settings|Als Character Example", "State|Als Character Example"))
+UCLASS(AutoExpandCategories = ("Settings|Als Character Example"))
 class ALSEXTRAS_API AAlsCharacterExample : public AAlsCharacter
 {
 	GENERATED_BODY()
@@ -65,12 +65,10 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings|Als Character Example", Meta = (ClampMin = 0, ForceUnits = "x"))
 	float LookRightMouseSensitivity{1.0f};
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings|Als Character Example",
-		Meta = (ClampMin = 0, ForceUnits = "deg/s"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings|Als Character Example", Meta = (ClampMin = 0, ForceUnits = "deg/s"))
 	float LookUpRate{90.0f};
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings|Als Character Example",
-		Meta = (ClampMin = 0, ForceUnits = "deg/s"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings|Als Character Example", Meta = (ClampMin = 0, ForceUnits = "deg/s"))
 	float LookRightRate{240.0f};
 
 public:
@@ -89,31 +87,31 @@ protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* Input) override;
 
 private:
-	void Input_OnLookMouse(const FInputActionValue& ActionValue);
+	virtual void Input_OnLookMouse(const FInputActionValue& ActionValue);
 
-	void Input_OnLook(const FInputActionValue& ActionValue);
+	virtual void Input_OnLook(const FInputActionValue& ActionValue);
 
-	void Input_OnMove(const FInputActionValue& ActionValue);
+	virtual void Input_OnMove(const FInputActionValue& ActionValue);
 
-	void Input_OnSprint(const FInputActionValue& ActionValue);
+	virtual void Input_OnSprint(const FInputActionValue& ActionValue);
 
-	void Input_OnWalk();
+	virtual void Input_OnWalk();
 
-	void Input_OnCrouch();
+	virtual void Input_OnCrouch();
 
-	void Input_OnJump(const FInputActionValue& ActionValue);
+	virtual void Input_OnJump(const FInputActionValue& ActionValue);
 
-	void Input_OnAim(const FInputActionValue& ActionValue);
+	virtual void Input_OnAim(const FInputActionValue& ActionValue);
 
-	void Input_OnRagdoll();
+	virtual void Input_OnRagdoll();
 
-	void Input_OnRoll();
+	virtual void Input_OnRoll();
 
-	void Input_OnRotationMode();
+	virtual void Input_OnRotationMode();
 
-	void Input_OnViewMode();
+	virtual void Input_OnViewMode();
 
-	void Input_OnSwitchShoulder();
+	virtual void Input_OnSwitchShoulder();
 
 	// Debug
 

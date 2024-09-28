@@ -5,10 +5,10 @@ public class ALS : ModuleRules
 	public ALS(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
-		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_3;
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_4;
 
 		bEnableNonInlinedGenCppWarnings = true;
-		UnsafeTypeCastWarningLevel = WarningLevel.Warning;
+		// UnsafeTypeCastWarningLevel = WarningLevel.Warning;
 
 		PublicDependencyModuleNames.AddRange(new[]
 		{
@@ -22,7 +22,12 @@ public class ALS : ModuleRules
 
 		if (Target.Type == TargetRules.TargetType.Editor)
 		{
-			PrivateDependencyModuleNames.AddRange(new[] {"MessageLog"});
+			PrivateDependencyModuleNames.AddRange(new[]
+			{
+				"MessageLog"
+			});
 		}
+
+		SetupIrisSupport(Target);
 	}
 }
